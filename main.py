@@ -8,11 +8,24 @@ display = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 fps = 120
 
+colors = [(255, 0, 0),
+            (255, 255, 0),
+            (0, 255, 0),
+            (0, 255, 255),
+            (0, 0, 255),
+            (255, 0, 255)]
+
+def rotate_color(color_index):
+    if color_index >= len(colors) - 1:
+        return 0
+    return color_index + 1
+
 class Box:
-    def __init__(self, x, y, size, direction):
+    def __init__(self, x, y, size, color_index, direction):
         self.x = x
         self.y = y
         self.size = size
+        self.color_index = color_index
         self.direction = direction
 
     def move(self):
@@ -22,13 +35,15 @@ class Box:
     def handle_direction_change(self):
         if self.x <= 0 or self.x + self.size >= width:
             self.direction[0] = -self.direction[0]
+            self.color_index = rotate_color(self.color_index)
 
         if self.y <= 0 or self.y + self.size >= height:
             self.direction[1] = -self.direction[1]
+            self.color_index = rotate_color(self.color_index)
 
 def main():
     size = 100
-    box = Box(random.randint(0, width - size), random.randint(0, height - size), size, [random.choice([1, -1]), random.choice([1, -1])])
+    box = Box(random.randint(0, width - size), random.randint(0, height - size), size, random.randint(0, len(colors) - 1), [random.choice([1, -1]), random.choice([1, -1])])
     running = True
     while running:
         for event in pygame.event.get():
@@ -36,9 +51,10 @@ def main():
                 running = False
 
         display.fill((0, 0, 0))
+
         box.move()
         box.handle_direction_change()
-        pygame.draw.rect(display, (255, 255, 0), (box.x, box.y, box.size, box.size))
+        pygame.draw.rect(display, colors[box.color_index], (box.x, box.y, box.size, box.size))
 
         pygame.display.update()
 
