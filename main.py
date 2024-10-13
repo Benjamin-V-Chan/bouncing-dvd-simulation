@@ -6,9 +6,9 @@ width, height = 800, 600
 display = pygame.display.set_mode((width, height))
 
 clock = pygame.time.Clock()
-fps = 120
+FPS = 120
 
-colors = [(255, 0, 0),
+COLORS = [(255, 0, 0),
             (255, 255, 0),
             (0, 255, 0),
             (0, 255, 255),
@@ -16,7 +16,7 @@ colors = [(255, 0, 0),
             (255, 0, 255)]
 
 def rotate_color(color_index):
-    if color_index >= len(colors) - 1:
+    if color_index >= len(COLORS) - 1:
         return 0
     return color_index + 1
 
@@ -43,7 +43,7 @@ class Box:
 
 def main():
     size = 100
-    box = Box(random.randint(0, width - size), random.randint(0, height - size), size, random.randint(0, len(colors) - 1), [random.choice([1, -1]), random.choice([1, -1])])
+    box = Box(random.randint(0, width - size), random.randint(0, height - size), size, random.randint(0, len(COLORS) - 1), [random.choice([1, -1]), random.choice([1, -1])])
     running = True
     while running:
         for event in pygame.event.get():
@@ -54,11 +54,11 @@ def main():
 
         box.move()
         box.handle_direction_change()
-        pygame.draw.rect(display, colors[box.color_index], (box.x, box.y, box.size, box.size))
+        pygame.draw.rect(display, COLORS[box.color_index], (box.x, box.y, box.size, box.size))
 
         pygame.display.update()
 
-        clock.tick(fps)
+        clock.tick(FPS)
 
     sys.exit()
 
